@@ -5,13 +5,17 @@ import matplotlib.pyplot as plt
 
 import robosuite
 from robosuite.controllers import load_composite_controller_config
-
+from pathlib import Path
+root_folder = Path(__file__).parent.parent
 from scipy.spatial.transform import Rotation as R
+from robosuite_models.robots import indy7_robot
+
 
 robot_name = "Indy7"
 
 # create controller
-controller_config = load_composite_controller_config(robot = robot_name, controller="indy7_absolute_pose.json")
+controller_path = root_folder/"scripts"/"indy7_absolute_pose.json"
+controller_config = load_composite_controller_config(robot = robot_name, controller=str(controller_path))
 # print(controller_config)
 
 env = robosuite.make(
