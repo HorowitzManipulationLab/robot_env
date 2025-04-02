@@ -31,7 +31,7 @@ if __name__ == "__main__":
     parser.add_argument("--arm", type=str, default="right", help="Which arm to control (eg bimanual) 'right' or 'left'")
     parser.add_argument("--camera", type=str, default=None, help="Which camera to use for collecting demos")
     parser.add_argument(
-        "--controller", type=str, default='BASIC', help="Choice of composite controller. e.g. 'BASIC', 'WHOLE_BODY_IK'"
+        "--controller", type=str, default='indy7_absolute_pose.json', help="Choice of composite controller. e.g. 'BASIC', 'WHOLE_BODY_IK'"
     )
     parser.add_argument("--device", type=str, default="keyboard")
     parser.add_argument(
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
         print(action.shape)
 
-        action[-1] = 0.1
+        action[-1] = 0.4
         action[0] = 0.01
         action[2] = 0
 
