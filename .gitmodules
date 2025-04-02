@@ -1,0 +1,6 @@
+[submodule "robosuite"]
+	path = robosuite
+	url = git@github.com:HorowitzManipulationLab/robosuite.git
+[submodule "robosuite_models"]
+	path = robosuite_models
+	url = git@github.com:HorowitzManipulationLab/robosuite_models.git
