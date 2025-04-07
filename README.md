@@ -32,5 +32,5 @@ You should run the main codes on the `scripts` directory, not `robot_env` direct
 
 Run
 ```source
-   python env_test_real.py
+python env_test_real.py
 ```
