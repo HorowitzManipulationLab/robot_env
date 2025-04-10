@@ -19,7 +19,7 @@ controller_config = load_composite_controller_config(robot = robot_name, control
 # print(controller_config)
 
 env = robosuite.make(
-    "Stack",
+    "PegInHole",
     robots=[robot_name],
     controller_configs=controller_config,   # arms controlled via OSC, other parts via JOINT_POSITION/JOINT_VELOCITY
     has_renderer=True,                      # on-screen rendering
@@ -41,27 +41,40 @@ possible body names:
 'gripper0_right_rightfinger', 'gripper0_right_finger_joint2_tip', 'fixed_mount0_base', 'fixed_mount0_controller_box', 
 'fixed_mount0_pedestal_feet', 'fixed_mount0_torso', 'fixed_mount0_pedestal', 'cubeA_main', 'cubeB_main'
 """
-cubeA_main_id = env.sim.model.body_name2id("cubeA_main")
-pos_cubeA = env.sim.data.body_xpos[cubeA_main_id]
-print("Cube A position: ", pos_cubeA)
-rotm_cubeA = env.sim.data.body_xmat[cubeA_main_id].reshape((3,3)) # rotation matrix
-quat_cubeA = env.sim.data.body_xquat[cubeA_main_id] # quaternion in wxyz format
-rotm_from_quat_cubeA = R.from_quat(quat_cubeA, scalar_first = True).as_matrix() # rotation matrix from quaternion
+# cubeA_main_id = env.sim.model.body_name2id("cubeA_main")
+# pos_cubeA = env.sim.data.body_xpos[cubeA_main_id]
+# print("Cube A position: ", pos_cubeA)
+# rotm_cubeA = env.sim.data.body_xmat[cubeA_main_id].reshape((3,3)) # rotation matrix
+# quat_cubeA = env.sim.data.body_xquat[cubeA_main_id] # quaternion in wxyz format
+# rotm_from_quat_cubeA = R.from_quat(quat_cubeA, scalar_first = True).as_matrix() # rotation matrix from quaternion
 
-print("confirm both are the same:", rotm_cubeA, rotm_from_quat_cubeA)
+# print("confirm both are the same:", rotm_cubeA, rotm_from_quat_cubeA)
 
-print(env.action_spec[0].shape)
+# print(env.action_spec[0].shape)
 rotm_basic = np.array([[
     [0, 1, 0],
     [1, 0, 0],
     [0, 0, -1]
 ]])
 
-for i in range(1000):
-    action = np.zeros((env.action_spec[0].shape[0],))
-    action[0:3] = np.array([0.5, 0, 0.3]) # Desired position to go in meter
-    action[3:6] = R.from_matrix(rotm_basic).as_rotvec() # Desired orientation to go in rotation vector representation
-    action[6] = -1
+for i in range(200):
+    if i < 60:
+        action = np.zeros((env.action_spec[0].shape[0],))
+        action[0:3] = np.array([0.3, 0.1, 0.0]) # Desired position to go in meter
+        action[3:6] = R.from_matrix(rotm_basic).as_rotvec() # Desired orientation to go in rotation vector representation
+        action[6] = -1
+    elif i < 120:
+        action = np.zeros((env.action_spec[0].shape[0],))
+        action[0:3] = np.array([0.5, 0.1, 0.0])
+        action[3:6] = R.from_matrix(rotm_basic).as_rotvec() # Desired orientation to go in rotation vector representation
+
+    else:
+        action = np.zeros((env.action_spec[0].shape[0],))
+        action[0:3] = np.array([0.7, 0.1, 0.0])
+        action[3:6] = R.from_matrix(rotm_basic).as_rotvec()
+        action[6] = -1
+
+    print(i, action[0:3])
 
     obs, reward, done, info = env.step(action)  # take action in the environment
 
