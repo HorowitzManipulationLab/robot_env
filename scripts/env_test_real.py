@@ -19,7 +19,7 @@ controller_config = load_composite_controller_config(robot = robot_name, control
 # print(controller_config)
 
 env = robosuite.make(
-    "PegInHole",
+    "StackCustom",
     robots=[robot_name],
     controller_configs=controller_config,   # arms controlled via OSC, other parts via JOINT_POSITION/JOINT_VELOCITY
     has_renderer=True,                      # on-screen rendering
@@ -29,6 +29,7 @@ env = robosuite.make(
     horizon=200,                            # each episode terminates after 200 steps
     use_object_obs=False,                   # no observations needed
     use_camera_obs=True,
+    camera_names= ["robot0_eye_in_hand_back", "agentview", "robot0_eye_in_hand"],
 )
 # reset the environment
 env.reset()
